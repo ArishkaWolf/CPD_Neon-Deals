@@ -1,0 +1,32 @@
+{
+  "name": "cheapshark-games-deals",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "lint": "eslint .",
+    "test": "vitest run",
+    "preview": "vite preview"
+  },
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "@vitejs/plugin-react": "^6.1.1",
+    "eslint": "^10.11.0",
+    "eslint-plugin-react-hooks": "^7.1.1",
+    "eslint-plugin-react-refresh": "^0.5.7",
+    "globals": "^17.12.0",
+    "vite": "^8.3.0",
+    "vitest": "^5.0.1"
+  },
+  "dependencies": {
+    "@tanstack/react-query": "^5.103.1",
+    "chart.js": "^4.5.1",
+    "lucide-react": "^1.47.0",
+    "react": "^19.3.0",
+    "react-chartjs-2": "^5.3.1",
+    "react-dom": "^19.3.0",
+    "react-router-dom": "^7.18.4"
+  }
+}
