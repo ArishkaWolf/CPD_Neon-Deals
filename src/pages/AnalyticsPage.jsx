@@ -9,7 +9,7 @@ import { buildAnalytics } from '../utils/analytics'
 import { formatPercent, formatPrice } from '../utils/format'
 
 ChartJS.register(ArcElement, BarElement, CategoryScale, Legend, LinearScale, PointElement, Tooltip)
-const chartColors = ['#46f59a', '#00d9ff', '#b56cff', '#ff4d8d', '#ffd166', '#7b8cff', '#ff8c42', '#43c6ac']
+const chartColors = ['#ff58bd', '#d94fdf', '#9b6cff', '#f782cf', '#b96ce8', '#765be0', '#e54da9', '#c08af2']
 
 export function AnalyticsPage() {
   const [searchParams, setSearchParams] = useSearchParams()
@@ -43,7 +43,7 @@ export function AnalyticsPage() {
       <section className="charts-grid">
         <article className="chart-panel"><div><p className="eyebrow">Распределение</p><h2>Глубина скидок</h2></div><div className="chart-wrap"><Bar data={{ labels: ['0–25%', '25–50%', '50–75%', '75–100%'], datasets: [{ label: 'Количество игр', data: analytics.savingsBuckets, backgroundColor: chartColors }] }} options={commonOptions} /></div></article>
         <article className="chart-panel"><div><p className="eyebrow">Магазины</p><h2>Доля предложений</h2></div><div className="chart-wrap"><Doughnut data={{ labels: analytics.topStores.map(([name]) => name), datasets: [{ data: analytics.topStores.map(([, count]) => count), backgroundColor: chartColors, borderWidth: 0 }] }} options={{ responsive: true, maintainAspectRatio: false, plugins: commonOptions.plugins }} /></div></article>
-        <article className="chart-panel chart-wide"><div><p className="eyebrow">Зависимость</p><h2>Цена и рейтинг сделки</h2></div><div className="chart-wrap"><Scatter data={{ datasets: [{ label: 'Предложения', data: deals.map((deal) => ({ x: Number(deal.salePrice), y: Number(deal.dealRating) })), backgroundColor: '#46f59a' }] }} options={{ ...commonOptions, scales: { x: { ...commonOptions.scales.x, title: { display: true, text: 'Цена, $', color: '#8e9aaa' } }, y: { ...commonOptions.scales.y, title: { display: true, text: 'Рейтинг сделки', color: '#8e9aaa' } } } }} /></div></article>
+        <article className="chart-panel chart-wide"><div><p className="eyebrow">Зависимость</p><h2>Цена и рейтинг сделки</h2></div><div className="chart-wrap"><Scatter data={{ datasets: [{ label: 'Предложения', data: deals.map((deal) => ({ x: Number(deal.salePrice), y: Number(deal.dealRating) })), backgroundColor: '#ff58bd' }] }} options={{ ...commonOptions, scales: { x: { ...commonOptions.scales.x, title: { display: true, text: 'Цена, $', color: '#8e9aaa' } }, y: { ...commonOptions.scales.y, title: { display: true, text: 'Рейтинг сделки', color: '#8e9aaa' } } } }} /></div></article>
       </section>
     </>
   )
