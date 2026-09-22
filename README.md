@@ -6,6 +6,8 @@
 
 Репозиторий: [ArishkaWolf/CPD_Neon-Deals](https://github.com/ArishkaWolf/CPD_Neon-Deals)
 
+Опубликованное приложение: [Neon Deals на GitHub Pages](https://arishkawolf.github.io/CPD_Neon-Deals/)
+
 ## Возможности
 
 - Поиск предложений по названию игры.
