@@ -75,7 +75,7 @@ export function SearchPage() {
     setSearchParams(next)
   }
 
-  const resetFilters = () => setSearchParams({ tags: 'discount', sortBy: 'DealRating', desc: '1' })
+  const resetFilters = () => setSearchParams({ sortBy: 'DealRating', desc: '1' })
 
   return (
     <>

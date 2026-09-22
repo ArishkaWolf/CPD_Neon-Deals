@@ -10,7 +10,7 @@ export const defaultFilters = {
   lowerPrice: '',
   upperPrice: '',
   metacritic: '',
-  tags: ['discount'],
+  tags: [],
 }
 
 export function SearchFilters({ initialValues, stores, onSubmit, onReset }) {
@@ -36,8 +36,8 @@ export function SearchFilters({ initialValues, stores, onSubmit, onReset }) {
     <form className="filter-panel" onSubmit={submit} noValidate>
       <div className="filter-heading">
         <div><p className="eyebrow">Параметры</p><h2>Фильтры поиска</h2></div>
-        <button className="button button-secondary filter-reset" type="button" onClick={reset}>
-          <RotateCcw size={15} /> Сбросить
+        <button className="icon-button subtle filter-reset" type="button" onClick={reset} aria-label="Сбросить фильтры" title="Сбросить фильтры">
+          <RotateCcw size={18} />
         </button>
       </div>
       <label className="field field-wide">

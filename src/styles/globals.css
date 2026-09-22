@@ -121,7 +121,7 @@ input:focus, select:focus { border-color: var(--accent); background: var(--surfa
 .button-primary > * { position: relative; z-index: 1; }
 .button-secondary { color: var(--text); border-color: var(--border); background: transparent; }
 .button-secondary:hover, .button-secondary:focus-visible { color: var(--accent-soft); border-color: var(--accent-soft); box-shadow: var(--glow); }
-.filter-reset { min-height: 34px; padding: 0 10px; font-size: .72rem; }
+.filter-reset { flex: 0 0 38px; width: 38px; height: 38px; }
 .filter-submit { width: 100%; }
 .mobile-filter-button { display: none; }
 .results-column { min-width: 0; animation: reveal-up .55s .13s ease both; }
