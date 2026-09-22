@@ -1,6 +1,7 @@
 import { useMemo, useState } from 'react'
 import { RotateCcw, Search } from 'lucide-react'
 import { validateFilters } from '../utils/filterValidation'
+import { SpringCheck } from './reactbits/SpringCheck'
 
 export const defaultFilters = {
   title: '',
@@ -77,12 +78,7 @@ export function SearchFilters({ initialValues, stores, onSubmit, onReset }) {
           ['steamworks', 'Активация Steam'],
           ['highlyRated', 'Высокий рейтинг'],
           ['deepDiscount', 'Скидка от 50%'],
-        ].map(([key, label]) => (
-          <label className="check-field" key={key}>
-            <input type="checkbox" checked={Boolean(values[key])} onChange={(event) => update(key, event.target.checked)} />
-            <span>{label}</span>
-          </label>
-        ))}
+        ].map(([key, label]) => <SpringCheck key={key} label={label} checked={Boolean(values[key])} onChange={(checked) => update(key, checked)} />)}
       </fieldset>
       <button className="button button-primary filter-submit" type="submit" disabled={!isValid}>
         <Search size={18} /> Найти предложения

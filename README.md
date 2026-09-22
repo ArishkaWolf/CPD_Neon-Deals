@@ -34,6 +34,8 @@
 - React Router
 - TanStack Query
 - Chart.js и react-chartjs-2
+- React Bits (адаптированные micro-компоненты)
+- Motion
 - Lucide React
 - ESLint
 - CSS с пользовательскими свойствами
