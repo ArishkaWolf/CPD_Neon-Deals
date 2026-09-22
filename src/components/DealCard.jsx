@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { ExternalLink, Gamepad2, Info, Monitor, Star } from 'lucide-react'
+import { ExternalLink, Gamepad2, Monitor, Star } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import { storeRedirectUrl } from '../api/cheapshark'
 import { formatDate, formatPercent, formatPrice } from '../utils/format'
@@ -34,7 +34,7 @@ export function DealCard({ deal, storeName }) {
           <div><dt>Релиз</dt><dd>{formatDate(deal.releaseDate)}</dd></div>
         </dl>
         <div className="card-actions">
-          <Link className="button button-secondary" to={`/deal/${encodeURIComponent(deal.dealID)}`}><Info size={16} /> Подробнее</Link>
+          <Link className="button button-secondary" to={`/deal/${encodeURIComponent(deal.dealID)}`}>Подробнее</Link>
           <a className="button button-primary" href={storeRedirectUrl(deal.dealID)} target="_blank" rel="noreferrer">В магазин <ExternalLink size={16} /></a>
         </div>
       </div>

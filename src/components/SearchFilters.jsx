@@ -36,8 +36,8 @@ export function SearchFilters({ initialValues, stores, onSubmit, onReset }) {
     <form className="filter-panel" onSubmit={submit} noValidate>
       <div className="filter-heading">
         <div><p className="eyebrow">Параметры</p><h2>Фильтры поиска</h2></div>
-        <button className="icon-button subtle" type="button" onClick={reset} title="Сбросить фильтры">
-          <RotateCcw size={18} /><span className="sr-only">Сбросить фильтры</span>
+        <button className="button button-secondary filter-reset" type="button" onClick={reset}>
+          <RotateCcw size={15} /> Сбросить
         </button>
       </div>
       <label className="field field-wide">
