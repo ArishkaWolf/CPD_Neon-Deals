@@ -9,14 +9,14 @@ import { Pagination } from '../components/Pagination'
 import { defaultFilters, SearchFilters } from '../components/SearchFilters'
 import { SortControls } from '../components/SortControls'
 import { useState } from 'react'
+import { getTagFilters, parseTags } from '../utils/searchTags'
 
 const PAGE_SIZE = 24
-const booleanKeys = ['onSale', 'AAA', 'steamworks', 'highlyRated', 'deepDiscount']
 
 function filtersFromUrl(params) {
   const result = { ...defaultFilters }
   for (const key of Object.keys(defaultFilters)) {
-    if (booleanKeys.includes(key)) result[key] = params.get(key) === '1'
+    if (key === 'tags' && params.has(key)) result[key] = parseTags(params.get(key))
     else if (params.has(key)) result[key] = params.get(key) ?? ''
   }
   return result
@@ -26,11 +26,12 @@ export function SearchPage() {
   const [searchParams, setSearchParams] = useSearchParams()
   const [filtersOpen, setFiltersOpen] = useState(false)
   const appliedFilters = filtersFromUrl(searchParams)
+  const tagFilters = getTagFilters(appliedFilters.tags)
   const page = Math.max(0, Number(searchParams.get('page') ?? 0))
   const selectedSort = searchParams.get('sortBy') ?? 'DealRating'
   const selectedDesc = searchParams.get('desc') !== '0'
-  const sortBy = appliedFilters.deepDiscount ? 'Savings' : selectedSort
-  const desc = appliedFilters.deepDiscount ? true : selectedDesc
+  const sortBy = tagFilters.deepDiscount ? 'Savings' : selectedSort
+  const desc = tagFilters.deepDiscount ? true : selectedDesc
 
   const storesQuery = useQuery({ queryKey: ['stores'], queryFn: getStores })
   const apiParams = {
@@ -38,11 +39,11 @@ export function SearchPage() {
     storeID: appliedFilters.storeID,
     lowerPrice: appliedFilters.lowerPrice,
     upperPrice: appliedFilters.upperPrice,
-    metacritic: appliedFilters.highlyRated ? '80' : appliedFilters.metacritic,
-    steamRating: appliedFilters.highlyRated ? '80' : undefined,
-    onSale: appliedFilters.onSale,
-    AAA: appliedFilters.AAA,
-    steamworks: appliedFilters.steamworks,
+    metacritic: tagFilters.metacritic ?? appliedFilters.metacritic,
+    steamRating: tagFilters.steamRating,
+    onSale: tagFilters.onSale,
+    AAA: tagFilters.AAA,
+    steamworks: tagFilters.steamworks,
     sortBy,
     desc,
     pageNumber: page,
@@ -50,18 +51,20 @@ export function SearchPage() {
   }
   const dealsQuery = useQuery({ queryKey: ['deals', apiParams], queryFn: () => getDeals(apiParams) })
   const pageDeals = dealsQuery.data?.deals ?? []
-  const visibleDeals = pageDeals.filter((deal) => !appliedFilters.deepDiscount || Number(deal.savings) >= 50)
-  const totalPages = appliedFilters.deepDiscount && visibleDeals.length < PAGE_SIZE
+  const visibleDeals = pageDeals.filter((deal) => !tagFilters.deepDiscount || Number(deal.savings) >= 50)
+  const totalPages = tagFilters.deepDiscount && visibleDeals.length < PAGE_SIZE
     ? page + 1
     : (dealsQuery.data?.totalPages ?? null)
 
   const applyFilters = (values) => {
     const next = new URLSearchParams()
     Object.entries(values).forEach(([key, value]) => {
-      if (typeof value === 'boolean' ? value : value !== '') next.set(key, typeof value === 'boolean' ? '1' : value)
+      if (Array.isArray(value) && value.length) next.set(key, value.join(','))
+      else if (!Array.isArray(value) && value !== '') next.set(key, value)
     })
-    next.set('sortBy', values.deepDiscount ? 'Savings' : selectedSort)
-    next.set('desc', values.deepDiscount ? '1' : (selectedDesc ? '1' : '0'))
+    const nextTagFilters = getTagFilters(values.tags)
+    next.set('sortBy', nextTagFilters.deepDiscount ? 'Savings' : selectedSort)
+    next.set('desc', nextTagFilters.deepDiscount ? '1' : (selectedDesc ? '1' : '0'))
     setSearchParams(next)
     setFiltersOpen(false)
   }
@@ -72,7 +75,7 @@ export function SearchPage() {
     setSearchParams(next)
   }
 
-  const resetFilters = () => setSearchParams({ onSale: '1', sortBy: 'DealRating', desc: '1' })
+  const resetFilters = () => setSearchParams({ tags: 'discount', sortBy: 'DealRating', desc: '1' })
 
   return (
     <>
@@ -89,9 +92,9 @@ export function SearchPage() {
         <section className="results-column" aria-label="Результаты поиска">
           <div className="results-toolbar">
             <div><p className="eyebrow">Результаты</p><strong>{dealsQuery.data ? `${visibleDeals.length} предложений на странице` : 'Загрузка каталога'}</strong></div>
-            <SortControls sortBy={sortBy} desc={desc} disabled={appliedFilters.deepDiscount} onSortChange={(value) => updateParams({ sortBy: value, page: '0' })} onDirectionChange={() => updateParams({ desc: desc ? '0' : '1', page: '0' })} />
+            <SortControls sortBy={sortBy} desc={desc} disabled={tagFilters.deepDiscount} onSortChange={(value) => updateParams({ sortBy: value, page: '0' })} onDirectionChange={() => updateParams({ desc: desc ? '0' : '1', page: '0' })} />
           </div>
-          {appliedFilters.deepDiscount && <p className="filter-notice">Для полного отбора скидок от 50% результаты автоматически упорядочены по размеру скидки.</p>}
+          {tagFilters.deepDiscount && <p className="filter-notice">Тег «Скидка 50%+» автоматически упорядочивает предложения по размеру скидки и применяет порог 50%.</p>}
           {dealsQuery.isPending && <LoadingState />}
           {dealsQuery.isError && <ErrorState onRetry={() => dealsQuery.refetch()} />}
           {dealsQuery.data && <DealsGrid deals={visibleDeals} stores={storesQuery.data ?? []} />}

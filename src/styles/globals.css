@@ -95,8 +95,13 @@ input:hover, select:hover { border-color: color-mix(in srgb, var(--accent) 45%, 
 input:focus, select:focus { border-color: var(--accent); background: var(--surface-solid); box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 16%, transparent), var(--glow); }
 .input-error, .input-error:focus { border-color: var(--danger); box-shadow: 0 0 0 3px color-mix(in srgb, var(--danger) 14%, transparent); }
 .field-error { color: var(--danger); font-size: .7rem; line-height: 1.25; animation: error-pop .22s ease both; }
-.quick-filters { display: grid; gap: 10px; margin: 20px 0; padding: 0; border: 0; }
-.quick-filters legend { margin-bottom: 10px; color: var(--muted); font-size: .8rem; font-weight: 700; }
+.search-tags { margin: 20px 0; padding: 0; border: 0; }
+.search-tags legend { color: var(--muted); font-size: .8rem; font-weight: 700; }
+.search-tags > p { margin: 3px 0 10px; color: var(--muted); font-size: .7rem; }
+.tag-options { display: flex; flex-wrap: wrap; gap: 7px; }
+.tag-option { min-height: 31px; display: inline-flex; align-items: center; gap: 4px; padding: 0 9px; color: var(--muted); border: 1px solid var(--border); border-radius: 7px; background: transparent; font: inherit; font-size: .7rem; font-weight: 750; cursor: pointer; transition: color .2s ease, border-color .2s ease, background .25s ease, box-shadow .25s ease, transform .2s ease; }
+.tag-option:hover, .tag-option:focus-visible { color: var(--accent-soft); border-color: var(--accent); outline: none; transform: translateY(-1px); box-shadow: var(--glow); }
+.tag-option.is-selected { color: #fff; border-color: transparent; background: var(--gradient); background-size: 170% 100%; box-shadow: 0 5px 15px rgba(199, 57, 184, .2); }
 .spring-check { display: flex; align-items: center; gap: 9px; width: max-content; max-width: 100%; color: var(--text); cursor: pointer; transition: color .2s ease, transform .2s ease; }
 .spring-check:hover { color: var(--accent-soft); transform: translateX(2px); }
 .spring-check input { position: absolute; width: 1px; height: 1px; opacity: 0; pointer-events: none; }

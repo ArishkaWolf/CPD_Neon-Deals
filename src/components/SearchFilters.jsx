@@ -1,7 +1,8 @@
 import { useMemo, useState } from 'react'
-import { RotateCcw, Search } from 'lucide-react'
+import { Check, RotateCcw, Search } from 'lucide-react'
+import { motion } from 'motion/react'
 import { validateFilters } from '../utils/filterValidation'
-import { SpringCheck } from './reactbits/SpringCheck'
+import { SEARCH_TAGS } from '../utils/searchTags'
 
 export const defaultFilters = {
   title: '',
@@ -9,11 +10,7 @@ export const defaultFilters = {
   lowerPrice: '',
   upperPrice: '',
   metacritic: '',
-  onSale: true,
-  AAA: false,
-  steamworks: false,
-  highlyRated: false,
-  deepDiscount: false,
+  tags: ['discount'],
 }
 
 export function SearchFilters({ initialValues, stores, onSubmit, onReset }) {
@@ -21,6 +18,9 @@ export function SearchFilters({ initialValues, stores, onSubmit, onReset }) {
   const errors = useMemo(() => validateFilters(values), [values])
   const isValid = Object.keys(errors).length === 0
   const update = (key, value) => setValues((current) => ({ ...current, [key]: value }))
+  const toggleTag = (tag) => update('tags', values.tags.includes(tag)
+    ? values.tags.filter((item) => item !== tag)
+    : [...values.tags, tag])
 
   const submit = (event) => {
     event.preventDefault()
@@ -70,15 +70,26 @@ export function SearchFilters({ initialValues, stores, onSubmit, onReset }) {
         <input className={errors.metacritic ? 'input-error' : ''} type="number" min="0" max="100" value={values.metacritic} onChange={(event) => update('metacritic', event.target.value)} placeholder="0–100" aria-invalid={Boolean(errors.metacritic)} />
         {errors.metacritic && <small className="field-error">{errors.metacritic}</small>}
       </label>
-      <fieldset className="quick-filters">
-        <legend>Быстрые фильтры</legend>
-        {[
-          ['onSale', 'Только со скидкой'],
-          ['AAA', 'AAA-игры'],
-          ['steamworks', 'Активация Steam'],
-          ['highlyRated', 'Высокий рейтинг'],
-          ['deepDiscount', 'Скидка от 50%'],
-        ].map(([key, label]) => <SpringCheck key={key} label={label} checked={Boolean(values[key])} onChange={(checked) => update(key, checked)} />)}
+      <fieldset className="search-tags">
+        <legend>Теги</legend>
+        <p>Можно выбрать несколько</p>
+        <div className="tag-options">
+          {SEARCH_TAGS.map(({ id, label }) => {
+            const selected = values.tags.includes(id)
+            return (
+              <motion.button
+                key={id}
+                className={selected ? 'tag-option is-selected' : 'tag-option'}
+                type="button"
+                aria-pressed={selected}
+                whileTap={{ scale: 0.94 }}
+                onClick={() => toggleTag(id)}
+              >
+                {selected && <Check size={13} />} {label}
+              </motion.button>
+            )
+          })}
+        </div>
       </fieldset>
       <button className="button button-primary filter-submit" type="submit" disabled={!isValid}>
         <Search size={18} /> Найти предложения
