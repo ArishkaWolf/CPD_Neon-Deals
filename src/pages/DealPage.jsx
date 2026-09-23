@@ -38,6 +38,7 @@ export function DealPage() {
             <div><dt>Steam</dt><dd><Star size={14} /> {gameInfo.steamRatingPercent ? `${gameInfo.steamRatingPercent}%` : '—'}</dd></div>
             <div><dt>Отзывы Steam</dt><dd>{gameInfo.steamRatingCount || '—'}</dd></div>
             <div><dt>Дата выхода</dt><dd>{formatDate(gameInfo.releaseDate)}</dd></div>
+            {gameInfo.publisher && gameInfo.publisher !== 'N/A' && <div><dt>Издатель</dt><dd>{gameInfo.publisher}</dd></div>}
             <div><dt>Активация Steam</dt><dd>{gameInfo.steamworks === '1' ? 'Да' : 'Нет'}</dd></div>
             <div><dt>Исторический минимум</dt><dd>{cheapestPrice?.price ? formatPrice(cheapestPrice.price) : 'Нет данных'}</dd></div>
           </dl>

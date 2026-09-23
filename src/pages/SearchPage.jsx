@@ -9,7 +9,7 @@ import { Pagination } from '../components/Pagination'
 import { defaultFilters, SearchFilters } from '../components/SearchFilters'
 import { SortControls } from '../components/SortControls'
 import { useState } from 'react'
-import { getTagFilters, parseTags } from '../utils/searchTags'
+import { getTagFilters, matchesTagFilters, parseTags } from '../utils/searchTags'
 
 const PAGE_SIZE = 24
 
@@ -51,7 +51,7 @@ export function SearchPage() {
   }
   const dealsQuery = useQuery({ queryKey: ['deals', apiParams], queryFn: () => getDeals(apiParams) })
   const pageDeals = dealsQuery.data?.deals ?? []
-  const visibleDeals = pageDeals.filter((deal) => !tagFilters.deepDiscount || Number(deal.savings) >= 50)
+  const visibleDeals = pageDeals.filter((deal) => matchesTagFilters(deal, tagFilters))
   const totalPages = tagFilters.deepDiscount && visibleDeals.length < PAGE_SIZE
     ? page + 1
     : (dealsQuery.data?.totalPages ?? null)
@@ -95,6 +95,7 @@ export function SearchPage() {
             <SortControls sortBy={sortBy} desc={desc} disabled={tagFilters.deepDiscount} onSortChange={(value) => updateParams({ sortBy: value, page: '0' })} onDirectionChange={() => updateParams({ desc: desc ? '0' : '1', page: '0' })} />
           </div>
           {tagFilters.deepDiscount && <p className="filter-notice">Тег «Скидка 50%+» автоматически упорядочивает предложения по размеру скидки и применяет порог 50%.</p>}
+          {tagFilters.yearTags.length > 0 && <p className="filter-notice">Теги года применяются к текущей странице результатов: CheapShark не поддерживает серверный поиск по диапазону даты выпуска.</p>}
           {dealsQuery.isPending && <LoadingState />}
           {dealsQuery.isError && <ErrorState onRetry={() => dealsQuery.refetch()} />}
           {dealsQuery.data && <DealsGrid deals={visibleDeals} stores={storesQuery.data ?? []} />}

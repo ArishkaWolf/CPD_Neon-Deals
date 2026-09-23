@@ -181,9 +181,9 @@ input:focus, select:focus { border-color: var(--accent); background: var(--surfa
 .back-link { display: inline-flex; align-items: center; gap: 7px; margin-bottom: 22px; color: var(--muted); text-decoration: none; transition: color .2s ease, transform .2s ease; }
 .back-link:hover { color: var(--accent); transform: translateX(-3px); }
 .deal-detail { display: grid; grid-template-columns: minmax(300px, 1fr) 1.25fr; overflow: hidden; border: 1px solid var(--border); border-radius: 8px; background: var(--surface); box-shadow: var(--shadow); backdrop-filter: blur(12px); animation: reveal-up .55s ease both; }
-.detail-cover { min-height: 360px; display: grid; place-items: center; overflow: hidden; background: var(--surface-raised); }
-.detail-cover img { width: 100%; height: 100%; object-fit: cover; transition: transform .7s ease; }
-.deal-detail:hover .detail-cover img { transform: scale(1.025); }
+.detail-cover { min-height: 360px; display: grid; place-items: center; overflow: hidden; padding: 18px; background: var(--surface-raised); }
+.detail-cover img { width: 100%; height: 100%; max-height: 520px; object-fit: contain; transition: transform .7s ease; }
+@media (hover: hover) { .deal-detail:hover .detail-cover img { transform: scale(1.015); } }
 .detail-content { position: relative; padding: 32px; }
 .detail-content::before { content: ""; position: absolute; top: 0; right: 0; left: 0; height: 3px; background: var(--gradient); }
 .detail-content h1 { margin: 8px 0 18px; font-size: 2rem; }
@@ -226,7 +226,7 @@ input:focus, select:focus { border-color: var(--accent); background: var(--surfa
   .filters-column.is-open { display: block; }
   .summary-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .deal-detail { grid-template-columns: 1fr; }
-  .detail-cover { min-height: 260px; aspect-ratio: 16 / 8; }
+  .detail-cover { min-height: 0; aspect-ratio: 16 / 9; padding: 12px; }
 }
 
 @media (max-width: 560px) {
@@ -243,6 +243,8 @@ input:focus, select:focus { border-color: var(--accent); background: var(--surfa
   .chart-wrap { height: 280px; }
   .analytics-intro { align-items: stretch; }
   .detail-content { padding: 20px; }
+  .detail-cover { width: 100%; max-height: 52vh; aspect-ratio: 16 / 10; }
+  .detail-cover img { max-width: 100%; max-height: 100%; }
   .detail-list { grid-template-columns: 1fr; }
   .card-actions { grid-template-columns: 1fr; }
   .pagination { justify-content: space-between; gap: 8px; }
